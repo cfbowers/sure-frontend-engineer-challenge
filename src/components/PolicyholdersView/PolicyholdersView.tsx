@@ -13,11 +13,14 @@ import {
 export default function PolicyholdersView() {
   const [policyHolders, setPolicyHolders] = React.useState<TPolicyHolder[]>([]);
 
-  useQuery('getPolicyHolders', async () => {
-    const policyHoldersResponse = await fetchPolicyHolders();
-    const { policyHolders } = await policyHoldersResponse.json();
-    setPolicyHolders(policyHolders);
-  });
+  const { isLoading: loadingPolicyHolders } = useQuery(
+    'getPolicyHolders',
+    async () => {
+      const policyHoldersResponse = await fetchPolicyHolders();
+      const { policyHolders } = await policyHoldersResponse.json();
+      setPolicyHolders(policyHolders);
+    }
+  );
 
   const { mutate } = useMutation('createPolicyHolder', postPolicyHolder, {
     onSuccess: async (data) => {
@@ -26,10 +29,18 @@ export default function PolicyholdersView() {
     },
   });
 
+  //show loading indicator if coming into the screen for the first time
+  if (loadingPolicyHolders && policyHolders.length === 0)
+    return <img
+      src="https://media.giphy.com/media/3y0oCOkdKKRi0/giphy.gif"
+      alt="loading-gif"
+      style={{ maxWidth: '100%' }}
+    />;
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
       <Box justifyContent="flex-end">
-        <Button variant='contained' onClick={() => mutate()}>
+        <Button variant="contained" onClick={() => mutate()}>
           {policyHolders.length <= 1 && <AddOutlined fontSize="small" />}
           <p style={{ margin: 'auto 4px' }}>{`${
             policyHolders.length <= 1 ? 'Add' : 'Update Last'
@@ -46,10 +57,10 @@ export default function PolicyholdersView() {
         <Typography variant="h5" textAlign="left" marginBottom="16px">
           Before production deployment
         </Typography>
-        <ul style={{ textAlign: 'left' }} >
+        <ul style={{ textAlign: 'left' }}>
           <li>Integration tests</li>
           <li>End to end tests</li>
-          <li>Loading indicators (e.g. skeletons, spinner) for when waiting for API calls</li>
+          <li>Loading indicators (e.g. skeletons, spinner) for when waiting for API calls &#9989;</li>
           <li>Error handling for unhandled exceptions with an Error Boundary at least at App.tsx level</li>
           <li>Error handling for API call failures with useErrorHandler from react-error-boundary</li>
           <li>More memes</li>
