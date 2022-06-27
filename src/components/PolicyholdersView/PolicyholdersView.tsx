@@ -58,9 +58,9 @@ export default function PolicyholdersView() {
           Before production deployment
         </Typography>
         <ul style={{ textAlign: 'left' }}>
-          <li>Integration tests</li>
+          <li>Loading indicators (e.g. skeletons, spinner) when waiting for API calls &#9989;</li>
+          <li>Test PolicyholdersView with mocked API responses &#9989;</li>
           <li>End to end tests</li>
-          <li>Loading indicators (e.g. skeletons, spinner) for when waiting for API calls &#9989;</li>
           <li>Error handling for unhandled exceptions with an Error Boundary at least at App.tsx level</li>
           <li>Error handling for API call failures with useErrorHandler from react-error-boundary</li>
           <li>More memes</li>
