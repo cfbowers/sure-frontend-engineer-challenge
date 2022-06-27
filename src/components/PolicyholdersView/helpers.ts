@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { TPolicyHolder } from './types';
 
 const policyholdersEndPoint =
@@ -15,10 +16,30 @@ export const formatAddress = (address: TPolicyHolder['address']): string => {
   return `${line1}${addressLine2Display}, ${city}, ${state} ${postalCode}`;
 };
 
+export const postPolicyHolder = () =>
+  fetch(policyholdersEndPoint, {
+    method: 'POST',
+    body: JSON.stringify({
+      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      age: faker.datatype.number(100),
+      phoneNumber: faker.phone.number(),
+      address: {
+        line1: faker.address.streetAddress(),
+        line2: faker.address.secondaryAddress(),
+        city: faker.address.city(),
+        state: faker.address.state(),
+        postalCode: faker.address.zipCode(),
+      },
+    }),
+  });
+
 export const getPolicyHolderRows = (policyHolder: TPolicyHolder) => [
   { key: 'Name', value: policyHolder.name },
   { key: 'Age', value: policyHolder.age },
-  { key: 'Primary Policy Holder', value: policyHolder.isPrimary ? 'Yes' : 'No' },
+  {
+    key: 'Primary Policy Holder',
+    value: policyHolder.isPrimary ? 'Yes' : 'No',
+  },
   { key: 'Phone Number', value: policyHolder.phoneNumber },
   { key: 'Address', value: formatAddress(policyHolder.address) },
 ];
