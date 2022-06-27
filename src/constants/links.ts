@@ -1,6 +1,6 @@
 const links = [
   {
-    text: 'Policyholders',
+    text: 'Policy Holders',
     href: '/policyholders',
     'data-testid': 'policyholders_link',
   },
