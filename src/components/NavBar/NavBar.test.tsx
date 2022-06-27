@@ -10,14 +10,20 @@ describe('NavBar', () => {
     ],
   };
 
-  it('should render NavBar links', () => {
-    const { getByText } = renderWithProviders(<NavBar {...defaultProps} />);
+  it.each(defaultProps.links.map((l) => l.text))(
+    'should render NavBar %s',
+    (text) => {
+      const { getByText } = renderWithProviders(<NavBar {...defaultProps} />);
+      expect(getByText(text)).toBeInTheDocument();
+    }
+  );
 
-    expect(getByText('Link1')).toBeInTheDocument();
-    expect(getByText('Link2')).toBeInTheDocument();
-    expect(getByText('Link3')).toBeInTheDocument();
-  });
-
-  // TODO: Challenge 2
-  it('should render an `href` attribute for each link', () => {});
+  it.each(defaultProps.links)(
+    'should render an `href` attribute for each link',
+    ({ text, href }) => {
+      const { getByText } = renderWithProviders(<NavBar {...defaultProps} />);
+      expect(getByText(text)).toHaveAttribute('href');
+      expect(getByText(text).getAttribute('href')).toBe(href);
+    }
+  );
 });
